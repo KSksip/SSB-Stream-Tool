@@ -1,6 +1,6 @@
 <template>
   <h1>💖 Hello World!</h1>
-  <p>Welcome to your Elaectron application.</p>
+  <p class="">Welcome to your Elaectron application.</p>
 </template>
 
 <script setup>
