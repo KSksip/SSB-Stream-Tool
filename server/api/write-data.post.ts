@@ -1,6 +1,6 @@
 import { db } from '../utils/lowdb'
 
-const socket = new WebSocket('ws://localhost:3000/_ws')
+/* const socket = new WebSocket('ws://localhost:3000/_ws') */
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -8,5 +8,6 @@ export default defineEventHandler(async (event) => {
   db.data = body
   db.write()
 
-  socket.send('update')
+  return { written: true }
+  /* socket.send('update') */
 })

@@ -7,7 +7,7 @@ export default defineWebSocketHandler({
   },
 
   message(peer, message) {
-    console.log("[ws] message");
+    console.log("[ws] message", message.text());
     db.read()
     if (message.text().includes("update")) {
         peer.publish('channel', JSON.stringify(db.data))

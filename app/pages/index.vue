@@ -2,12 +2,17 @@
 import {ref} from 'vue'
 import { type OverlayInfo } from '~~/types/overlayInfo';
 
+const socket = new WebSocket('ws://localhost:3000/_ws')
 const { data } = await useFetch<OverlayInfo>('/api/get-data')
 
 async function writeData() {
   await $fetch('/api/write-data', {
     method: 'post',
     body: data.value,
+  }).then((res) => {
+    if(res.written){
+      socket.send('update')
+    }
   })
 }
 </script>
