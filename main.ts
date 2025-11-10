@@ -36,7 +36,7 @@ subprocess.stderr.on('data', function(data) {
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
     /* webPreferences: {
       preload: path.join(__dirname, 'preload.js')
