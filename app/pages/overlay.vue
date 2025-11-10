@@ -21,11 +21,7 @@ socket.onmessage = (event) => {
 
 <template>
   <div v-if="data">
-    <p>{{ typeof(data) }}</p>
-    <p>{{data.setInfo.round}}</p>
-    <p>{{data.setInfo.bestOf}}</p>
-    <p>{{data}}</p>
-    
+    <p>{{ data }}</p>
   </div>
 </template>
 
