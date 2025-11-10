@@ -3,7 +3,7 @@
         <div
         :class="inputClass"
         class="z-20 flex border whitespace-nowrap bg-white border-inherit w-full min-w-5">
-            <input v-model="modeledVal" @click="isFocused = true" :placeholder="props.placeholder" type="text" class="outline-none min-w-1 grow placeholder:text-zinc-500">
+            <input v-model="modeledVal" @click="isFocused = true" :placeholder="props.placeholder" type="text" class="outline-none min-w-1 w-full grow placeholder:text-zinc-500">
             <button class="flex" @click="isFocused = !isFocused">
                 <Icon name="radix-icons:chevron-down" class="my-auto hover:cursor-pointer hover:text-zinc-400"/>
             </button>

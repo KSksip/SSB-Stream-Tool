@@ -119,6 +119,7 @@ watch(playerName, ()=>{
             />
             <custom-combobox 
               :options="test" 
+              class="grow"
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
               placeholder="Name" 
@@ -136,7 +137,7 @@ watch(playerName, ()=>{
 
           <div class="flex w-full gap-1">
             <custom-combobox 
-              class="w-40.5"
+              class=""
               :options="test" 
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
@@ -144,7 +145,7 @@ watch(playerName, ()=>{
               v-model="data.character"
             />
             <custom-combobox 
-              class="w-40.5"
+              class=""
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
               placeholder="Skin" 
@@ -156,7 +157,7 @@ watch(playerName, ()=>{
 
           <div class="flex w-full gap-1">
             <custom-combobox 
-              class="w-40.5"
+              class=""
               :options="test" 
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
@@ -164,7 +165,7 @@ watch(playerName, ()=>{
               v-model="data.Country"
             />
             <custom-combobox 
-              class="w-40.5"
+              class=""
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
               placeholder="Region" 

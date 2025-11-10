@@ -67,7 +67,7 @@ const test = [
   
       <div class="flex gap-4">
         
-        <playerCard label="Player 1" class="" v-model="data.player[0]"></playerCard>
+        <playerCard label="Player 1" class="w-90" v-model="data.player[0]"></playerCard>
   
         <div class="flex flex-col gap-2 items-center">
           <h1 class="text-xl">Score</h1>
@@ -115,7 +115,7 @@ const test = [
           </div>
         </div>
   
-        <playerCard label="Player 2" v-model="data.player[1]"></playerCard>
+        <playerCard label="Player 2" class="w-90" v-model="data.player[1]"></playerCard>
       </div>
       <div class="flex gap-2 w-full justify-center">
   
