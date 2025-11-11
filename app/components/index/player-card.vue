@@ -4,15 +4,18 @@ import { type Player, type PlayerPresets } from '~~/types/overlayInfo';
 
 const data = defineModel({type: Object, required: true})
 //literally only using playerName ref for the watcher :/
+// like atp just make all the relevant variables refs :sob:
 const playerName = ref<string>('')
+const chosenCharacter = ref<string>('')
 const playerPresets = ref<PlayerPresets>({})
 const playerPresetsKeys = computed(()=>{
   return Object.keys(playerPresets.value)
 })
 const selectedPreset = ref<string>('')
 
-defineProps<{
+const props = defineProps<{
     label: string,
+    charactersList: any,
 }>()
 
 const style = {
@@ -78,17 +81,32 @@ function clearPlayerData(){
   playerName.value = ""
 }
 
-watch(playerName, ()=>{
+watch(playerName, () => {
   data.value.name = playerName.value
 
-  /* if(data.value.name != selectedPreset.value){
-    selectedPreset.value = ""
-  } */
   console.log(playerPresetsKeys.value.includes(data.value.name))
   if(playerPresetsKeys.value.includes(data.value.name)){
     selectedPreset.value = data.value.name
   }
 })
+
+watch(chosenCharacter, () => {
+  data.value.character = chosenCharacter.value
+
+  if(charactersSkinsList.value.includes(data.value.character)){
+    chosenCharacter.value = 'neutral'
+  }
+})
+
+const charactersSkinsList = computed(() => {
+  if(props.charactersList[data.value.character]?.skins){
+    return props.charactersList[data.value.character].skins
+
+  } else {
+    return []
+  }
+})
+
 
 </script>
 <template>
@@ -105,7 +123,6 @@ watch(playerName, ()=>{
           <input class="checked:bg-green-500 size-3.5 hover:cursor-pointer" name="losers" type="checkbox" v-model="data.losers">
         </div>
     </div>
-    
     <div class="flex gap-10">
       <div class="flex flex-col gap-1">
           <div class="flex gap-1">
@@ -135,14 +152,14 @@ watch(playerName, ()=>{
             v-model="data.pronouns"
           />
 
-          <div class="flex w-full gap-1">
+          <div v-if="charactersList" class="flex w-full gap-1">
             <custom-combobox 
               class=""
-              :options="test" 
+              :options="Object.keys(charactersList)" 
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
               placeholder="Character" 
-              v-model="data.character"
+              v-model="chosenCharacter"
             />
             <custom-combobox 
               class=""
@@ -150,11 +167,10 @@ watch(playerName, ()=>{
               :menuClass="style.ddMenuClass"
               placeholder="Skin" 
               v-model="data.skin"
-              :options="test"  
+              :options="charactersSkinsList"  
             />  
           </div>
           
-
           <div class="flex w-full gap-1">
             <custom-combobox 
               class=""

@@ -7,22 +7,27 @@ import customNumberInput from '~/components/interface/custom-number-input.vue';
 import customCombobox from '~/components/interface/custom-combobox.vue';
 
 const socket = new WebSocket('ws://localhost:3000/_ws')
-const data  = ref(await $fetch<OverlayInfo>('/api/get-data'))
+const playerData  = ref(await $fetch<OverlayInfo>('/api/get-data'))
+const gamesList = ref<string[]>((await $fetch<{data: string[]}>('/api/get-games-list')).data)
+
+const charactersData = ref()
+
+const selectedGame = ref('')
 
 async function writeData() {
   await $fetch('/api/write-data', {
     method: 'post',
-    body: data.value,
+    body: playerData.value,
   }).then((res) => {
-    if(res.written){
+    if(res){
       socket.send('update')
     }
   })
 }
 
 function resetScores(){
-  data.value.player[0].score = 0
-  data.value.player[1].score = 0
+  playerData.value.player[0].score = 0
+  playerData.value.player[1].score = 0
 }
 
 const style = {
@@ -30,29 +35,38 @@ const style = {
   ddMenuClass: "border-zinc-300 rounded-b-sm shadow-sm [&_button]:hover:bg-zinc-100"
 }
 
-const test = [
-  'a',
-  'b',
-  'ab'
-]
+watch(selectedGame, async () => {
+  if(gamesList.value.includes(selectedGame.value)){
+    console.log('a')
+    await $fetch('/api/get-game-characters', {
+      method: 'post',
+      body: {selectedGame: selectedGame.value},
+    }).then((res) => {
+      console.log(res)
+      charactersData.value = res.data
+    })
+  }
+})
+
+//make elements stop complaining
+const test = ref([])
 
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
     <div class="flex justify-between bg-white text-zinc-500 shadow-sm shadow-black/10 px-2.5 py-1.5">
-      <div class="flex gap-3 ">
+      <div class="flex gap-3 text-black">
         <button class="">
-          <Icon class="scale-150 translate-y-0.5" name="radix-icons:gear" />
+          <Icon class="scale-150 translate-y-0.5" name="radix-icons:hamburger-menu" />
         </button>
-
         <custom-combobox 
           :inputClass="style.ddInputClass"
           :menuClass="style.ddMenuClass"
           class="w-35 my-auto"
           placeholder="Game" 
-          v-model="data.setInfo.phase"
-          :options="test"  
+          v-model="selectedGame"
+          :options="gamesList"  
         />
       </div>
 
@@ -63,21 +77,21 @@ const test = [
       </div>
     </div>
 
-    <div v-if="data" class="flex flex-col gap-3 items-center pb-10">
+    <div v-if="playerData" class="flex flex-col gap-3 items-center pb-10">
   
       <div class="flex gap-4">
         
-        <playerCard label="Player 1" class="w-90" v-model="data.player[0]"></playerCard>
-  
+        <playerCard label="Player 1" :charactersList="charactersData" class="w-90" v-model="playerData.player[0]"></playerCard>
+        
         <div class="flex flex-col gap-2 items-center">
           <h1 class="text-xl">Score</h1>
           <div class="flex flex-col items-center gap-2">
             <div class="flex items-center justify-between w-full">
-              <customNumberInput v-model="data.player[0].score" class="outline-zinc-300 w-12 rounded-sm inset-shadow-sm py-0.5 ps-2"/>
+              <customNumberInput v-model="playerData.player[0].score" class="outline-zinc-300 w-12 rounded-sm inset-shadow-sm py-0.5 ps-2"/>
               <button @click="resetScores()" class="outline flex outline-zinc-300 size-7 rounded-sm shadow-sm hover:cursor-pointer">
                 <Icon name="radix-icons:reload" class="m-auto"/>
               </button>
-              <customNumberInput v-model="data.player[1].score" class="outline-zinc-300 w-12 rounded-sm inset-shadow-sm py-0.5 ps-2"/>
+              <customNumberInput v-model="playerData.player[1].score" class="outline-zinc-300 w-12 rounded-sm inset-shadow-sm py-0.5 ps-2"/>
             </div>
   
             <custom-combobox 
@@ -85,7 +99,7 @@ const test = [
               :menuClass="style.ddMenuClass"
               class="w-35"
               placeholder="Phase" 
-              v-model="data.setInfo.phase"
+              v-model="playerData.setInfo.phase"
               :options="test"  
             />
   
@@ -94,16 +108,16 @@ const test = [
               :menuClass="style.ddMenuClass"
               class="w-35"
               placeholder="Match" 
-              v-model="data.setInfo.match"
+              v-model="playerData.setInfo.match"
               :options="test"  
             />
             
             <span class="-mb-1.5">Best Of</span>
             <div class="flex gap-2 [&_button]:size-6 [&_button]:outline [&_button]:outline-zinc-300 [&_button]:rounded-sm [&_button]:hover:cursor-pointer">
               <!-- fix this (make concise) -->
-              <button :class="data.setInfo.bestOf == 1 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="data.setInfo.bestOf = 1">1</button>
-              <button :class="data.setInfo.bestOf == 3 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="data.setInfo.bestOf = 3">3</button>
-              <button :class="data.setInfo.bestOf == 5 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="data.setInfo.bestOf = 5">5</button>
+              <button :class="playerData.setInfo.bestOf == 1 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 1">1</button>
+              <button :class="playerData.setInfo.bestOf == 3 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 3">3</button>
+              <button :class="playerData.setInfo.bestOf == 5 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 5">5</button>
               
               <!-- make this thing do something -->
               <button class=""><Icon name="radix-icons:dots-horizontal" class="size-fit translate-y-0.5 text-black"></Icon></button>
@@ -115,7 +129,7 @@ const test = [
           </div>
         </div>
   
-        <playerCard label="Player 2" class="w-90" v-model="data.player[1]"></playerCard>
+        <playerCard label="Player 2" :charactersList="charactersData" class="w-90" v-model="playerData.player[1]"></playerCard>
       </div>
       <div class="flex gap-2 w-full justify-center">
   
@@ -131,7 +145,6 @@ const test = [
         
   
       </div>
-      
     </div>
   </div>
 </template>
