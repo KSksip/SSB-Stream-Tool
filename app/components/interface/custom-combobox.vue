@@ -3,7 +3,7 @@
         <div
         :class="inputClass"
         class="z-20 flex border whitespace-nowrap bg-white border-inherit w-full min-w-5">
-            <input v-model="modeledVal" @click="isFocused = true" :placeholder="props.placeholder" type="text" class="outline-none min-w-1 w-full grow placeholder:text-zinc-500">
+            <input v-model="modeledVal" @click="handleClickedInput()" :placeholder="props.placeholder" type="text" class="outline-none min-w-1 w-full grow placeholder:text-zinc-500">
             <button class="flex" @click="isFocused = !isFocused">
                 <Icon name="radix-icons:chevron-down" class="my-auto hover:cursor-pointer hover:text-zinc-400"/>
             </button>
@@ -57,6 +57,12 @@ const isFocused = ref(false)
 
 const modeledVal = defineModel({type: String, required: true})
 
+function handleClickedInput(){
+    if(!isFocused.value){
+        modeledVal.value = ''
+    }
+    isFocused.value = true
+}
 
 function selectOption(val:any){
     isFocused.value = false
