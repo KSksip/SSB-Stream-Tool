@@ -10,6 +10,8 @@ const socket = new WebSocket('ws://localhost:3000/_ws')
 const playerData  = ref(await $fetch<OverlayInfo>('/api/get-data'))
 const gamesList = ref<string[]>((await $fetch<{data: string[]}>('/api/get-games-list')).data)
 
+const showMenu = ref(false)
+
 const charactersData = ref()
 
 const selectedGame = ref('')
@@ -54,10 +56,10 @@ const test = ref([])
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <div class="flex justify-between bg-white text-zinc-500 shadow-sm shadow-black/10 px-2.5 py-1.5">
-      <div class="flex gap-3 text-black">
-        <button class="">
+  <div class="flex flex-col gap-4">
+    <div class="flex z-40 justify-between bg-white text-zinc-500 shadow-sm shadow-black/10 px-2.5 py-1.5">
+      <div class="flex gap-6 px-3 text-black">
+        <button class="hover:cursor-pointer" @click="showMenu = !showMenu">
           <Icon class="scale-150 translate-y-0.5" name="radix-icons:hamburger-menu" />
         </button>
         <custom-combobox 
@@ -75,6 +77,13 @@ const test = ref([])
           <Icon class="scale-150 translate-y-0.5" name="radix-icons:question-mark-circled" />
         </button>
       </div>
+    </div>
+
+    <div v-if="showMenu" class="fade-in w-1/3 z-30 h-full bg-white/95 shadow-md shadow-black/50 fixed outline outline-zinc-300 flex flex-col py-14 ps-7">
+      <button class="flex w-fit *:my-auto gap-3 hover:text-zinc-500 hover:cursor-pointer transition">
+        <Icon name="radix-icons:gear" class="scale-150"></Icon>
+        <h3 class="text-lg">Settings</h3>
+      </button>
     </div>
 
     <div v-if="playerData" class="flex flex-col gap-3 items-center pb-10">
@@ -150,4 +159,22 @@ const test = ref([])
 </template>
 
 <style scoped>
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-out;
+	animation-duration: 0.22s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+    transform: translateX(-66%);
+		opacity: 0;
+	}
+	100% {
+    transform: translateX(0);
+		opacity: 1;
+	}
+}
 </style>
