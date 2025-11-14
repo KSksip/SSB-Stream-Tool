@@ -1,6 +1,6 @@
 export type GameData = {
     [key: string]: {
-        character:{
+        character?:{
             [key: string]:{
                 skins: string[]
             },
