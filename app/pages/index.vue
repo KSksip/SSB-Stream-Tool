@@ -79,7 +79,7 @@ const test = ref([])
       </div>
     </div>
 
-    <div v-if="showMenu" class="fade-in w-1/3 z-30 h-full bg-white/95 shadow-md shadow-black/50 fixed outline outline-zinc-300 flex flex-col py-14 ps-7">
+    <div :class="showMenu ? 'animate-fade-in-from-left' : 'animate-fade-out-to-left hidden'" class="w-1/3 z-30 h-full bg-white/95 shadow-md shadow-black/50 fixed outline outline-zinc-300 flex flex-col py-14 ps-7">
       <button class="flex w-fit *:my-auto gap-3 hover:text-zinc-500 hover:cursor-pointer transition">
         <Icon name="radix-icons:gear" class="scale-150"></Icon>
         <h3 class="text-lg">Settings</h3>
@@ -102,7 +102,20 @@ const test = ref([])
               </button>
               <customNumberInput v-model="playerData.player[1].score" class="outline-zinc-300 w-12 rounded-sm inset-shadow-sm py-0.5 ps-2"/>
             </div>
-  
+
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="">Best Of</span>
+              <div class="flex gap-2 [&_button]:size-6 [&_button]:outline [&_button]:outline-zinc-300 [&_button]:rounded-sm [&_button]:hover:cursor-pointer">
+                <!-- fix this (make concise) -->
+                <button :class="playerData.setInfo.bestOf == 1 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 1">1</button>
+                <button :class="playerData.setInfo.bestOf == 3 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 3">3</button>
+                <button :class="playerData.setInfo.bestOf == 5 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 5">5</button>
+                
+                <!-- make this thing do something -->
+                <button class=""><Icon name="radix-icons:dots-horizontal" class="size-fit translate-y-0.5 text-black"></Icon></button>
+              </div>
+            </div>
+            
             <custom-combobox 
               :inputClass="style.ddInputClass"
               :menuClass="style.ddMenuClass"
@@ -121,20 +134,10 @@ const test = ref([])
               :options="test"  
             />
             
-            <span class="-mb-1.5">Best Of</span>
-            <div class="flex gap-2 [&_button]:size-6 [&_button]:outline [&_button]:outline-zinc-300 [&_button]:rounded-sm [&_button]:hover:cursor-pointer">
-              <!-- fix this (make concise) -->
-              <button :class="playerData.setInfo.bestOf == 1 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 1">1</button>
-              <button :class="playerData.setInfo.bestOf == 3 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 3">3</button>
-              <button :class="playerData.setInfo.bestOf == 5 ? 'inset-shadow-sm inset-shadow-black/15' : 'shadow-sm'" @click="playerData.setInfo.bestOf = 5">5</button>
-              
-              <!-- make this thing do something -->
-              <button class=""><Icon name="radix-icons:dots-horizontal" class="size-fit translate-y-0.5 text-black"></Icon></button>
-            </div>
-            <button @click="writeData()" class="w-full hover:cursor-pointer bg-yellow-400 rounded-sm text-white flex justify-center gap-2 px-3 shadow-sm py-1">
+            <!-- <button @click="writeData()" class="w-full hover:cursor-pointer bg-yellow-400 rounded-sm text-white flex justify-center gap-2 px-3 shadow-sm py-1">
               <span>Swap Sides</span>
               <Icon name="radix-icons:shuffle" class="my-auto"/>
-            </button>
+            </button> -->
           </div>
         </div>
   

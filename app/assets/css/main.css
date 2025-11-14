@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+
+
+@theme {
+    --animate-fade-in-from-left: fadeInFromLeft 0.205s ease-in-out;
+    
+    @keyframes fadeInFromLeft {
+        0% {
+            transform: translateX(-66%);
+            opacity: 0;  
+        }
+        100% { 
+            transform: translateX(0);
+            opacity: 100;
+        }
+    }
+    
+        
+    --animate-fade-out-to-left: fadeOutToLeft 1s ease-in;
+    
+    @keyframes fadeOutToLeft {
+        0% { 
+            transform: translateX(0);
+            opacity: 100;
+        }
+        100% {
+            transform: translateX(-66%);
+            opacity: 0;  
+        }
+    }
+
+}
