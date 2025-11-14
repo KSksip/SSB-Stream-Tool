@@ -1,0 +1,31 @@
+{
+  "setInfo": {
+    "phase": "",
+    "match": "",
+    "bestOf": 0
+  },
+  "player": [
+    {
+      "losers": false,
+      "name": "",
+      "prefix": "",
+      "score": 0,
+      "character": "",
+      "skin": "",
+      "pronouns": "",
+      "country": "",
+      "region": ""
+    },
+    {
+      "losers": false,
+      "name": "",
+      "prefix": "",
+      "score": 0,
+      "character": "",
+      "skin": "",
+      "pronouns": "",
+      "country": "",
+      "region": ""
+    }
+  ]
+}
